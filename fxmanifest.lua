@@ -16,10 +16,3 @@ client_scripts {
 server_scripts {
     "server/*.lua"
 }
-
--- Interface (NUI)
-ui_page "web/build/index.html"
-
-files {
-    "web/build/**",
-}
