@@ -50,12 +50,41 @@ for ACTION_FULL in $ACTIONS; do
     fi
 done
 
+echo "📦 Buscando a última versão LTS do Node.js..."
+LATEST_NODE=$(curl -sL https://nodejs.org/dist/index.json | jq -r '[.[] | select(.lts != false)] | .[0].version' | grep -oE "^v[0-9]+" | sed 's/v//' 2>/dev/null)
+
+if [ ! -z "$LATEST_NODE" ] && [ "$LATEST_NODE" != "null" ]; then
+    echo "✨ Última major version do Node.js encontrada: $LATEST_NODE"
+
+    # Verifica em quais arquivos há 'node-version: XX'
+    NODE_FILES=$(grep -lE "node-version:[[:space:]]*['\"]?[0-9]+['\"]?" .github/workflows/*.yml || true)
+
+    for FILE in $NODE_FILES; do
+        if [ ! -z "$FILE" ] && [ -f "$FILE" ]; then
+            CURRENT_NODE=$(grep -oE "node-version:[[:space:]]*['\"]?[0-9]+['\"]?" "$FILE" | head -1 | grep -oE "[0-9]+")
+            if [ ! -z "$CURRENT_NODE" ] && [ "$CURRENT_NODE" != "$LATEST_NODE" ]; then
+                sed -i -E "s/node-version:[[:space:]]*['\"]?[0-9]+['\"]?/node-version: $LATEST_NODE/g" "$FILE"
+                echo "📝 Node atualizado de $CURRENT_NODE para $LATEST_NODE em $FILE"
+                UPDATED=true
+            else
+                echo "✅ Node já está na versão LTS mais recente ($LATEST_NODE) em $FILE"
+            fi
+        fi
+    done
+else
+    echo "⚠️ Não foi possível determinar a última versão do Node.js."
+fi
+
 if [ "$UPDATED" = true ]; then
     echo "🚀 Criando Pull Request..."
 
+    # Garante que a opção de excluir a branch após o merge esteja ativada no repositório
+    echo "⚙️ Configurando o repositório para auto-deletar a branch após o merge..."
+    gh repo edit --delete-branch-on-merge || echo "⚠️ Aviso: Permissão insuficiente para alterar configurações do repositório. Ative isso manualmente em Settings > Pull Requests."
+
     git checkout -b "$BRANCH_NAME"
     git add .github/workflows/*.yml
-    git commit -m "chore: update github actions versions"
+    git commit -m "chore: update github actions versions [skip ci]"
     git push origin "$BRANCH_NAME" --force
 
     # Busca membros do time para atribuição (default: merge)
@@ -67,7 +96,7 @@ if [ "$UPDATED" = true ]; then
     ASSIGNEES=$(gh api "orgs/$ORG/teams/$TEAM_NAME/members" -q '.[].login' | paste -sd "," - || echo "")
 
     PR_ARGS=(
-        --title "chore: update github actions versions"
+        --title "chore: update github actions versions [skip ci]"
         --body "Automated update of GitHub Actions versions found in .github/workflows/"
         --base main
         --head "$BRANCH_NAME"
