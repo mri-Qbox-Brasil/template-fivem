@@ -1,4 +1,5 @@
 node_modules/
-.release/
+.release/node_modules/
+dist/
 config/user.lua
 .env

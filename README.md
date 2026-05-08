@@ -46,35 +46,39 @@
 ```
 meu-script/
 ├── .github/
-│   └── workflows/
-│       └── release.yml          # GitHub Actions workflow
+│   ├── templates/               # Templates para geração de docs via IA
+│   └── workflows/               # GitHub Actions workflows
+├── .release/                    # Infraestrutura de release (oculto do yarn do FiveM)
+│   ├── package.json             # Dependências npm (semantic-release, openai)
+│   ├── release.config.js        # Configuração do semantic-release
+│   ├── set-version.js           # Injeta versão no fxmanifest.lua
+│   └── generate-docs.js         # Geração de docs via IA
 ├── client/                      # Código fonte Lua do lado do cliente
 │   └── main.lua
 ├── server/                      # Código fonte Lua do lado do servidor
 │   └── main.lua
 ├── shared/                      # Código compartilhado (config, utils)
 │   └── config.lua
-├── .release/                    # Pasta gerada pelo build (não versionar)
-│   └── meu-script/
-│       └── (arquivos prontos)
+├── dist/                        # Saída do build (não versionar)
+│   └── meu-script.zip
 ├── scripts/
-│   └── build.sh                 # Script de build para produção
+│   ├── build.sh                 # Script de build para produção
+│   └── update-actions.sh        # Atualização automática de actions
 ├── fxmanifest.lua               # Manifesto do recurso FiveM
-├── package.json                 # Dependências npm (semantic-release)
-├── release.config.js            # Configuração do semantic-release
 ├── .gitignore
 └── README.md
 ```
 
 ### Descrição das Pastas
 
-| Pasta | Propósito | Exemplo de arquivo |
-|-------|-----------|-------------------|
-| `client/` | Lógica do cliente (UI, inputs, rendering) | `client/main.lua` |
-| `server/` | Lógica do servidor (API, database, events) | `server/main.lua` |
-| `shared/` | Código compartilhado (config, helpers) | `shared/config.lua` |
-| `.release/` | Saída do build (zip pronto para produção) | `.release/meu-script.zip` |
-| `scripts/` | Scripts de automação | `scripts/build.sh` |
+| Pasta | Propósito |
+|-------|-----------|
+| `.release/` | Configs de release — oculto para o yarn do FiveM não processar |
+| `client/` | Lógica do cliente (UI, inputs, rendering) |
+| `server/` | Lógica do servidor (API, database, events) |
+| `shared/` | Código compartilhado (config, helpers) |
+| `dist/` | Saída do build (zip pronto para produção) |
+| `scripts/` | Scripts de automação (bash) |
 
 ---
 
@@ -96,6 +100,9 @@ meu-script/
 | **@semantic-release/changelog** | ^6.0.0 | Geração de changelog |
 | **@semantic-release/github** | ^10.0.0 | Integração GitHub |
 | **@semantic-release/exec** | ^6.0.3 | Executar comandos customizados |
+| **openai** | ^4.0.0 | Cliente de API para geração de docs via IA |
+
+> Todas as dependências Node ficam em `.release/` — invisíveis para o yarn do FiveM.
 
 ---
 
@@ -163,10 +170,10 @@ Se preferir não usar o botão **Use this template**, é possível levar apenas 
 Arquivos a copiar:
 
 ```
-package.json
-release.config.js
+.release/package.json
+.release/release.config.js
+.release/set-version.js
 scripts/build.sh
-scripts/set-version.js
 .github/workflows/release.yml
 ```
 
@@ -193,14 +200,14 @@ Requisitos:
 Arquivos a copiar:
 
 ```
-scripts/generate-docs.js
+.release/generate-docs.js
 .github/templates/README.template.md
 .github/templates/MANUAL.template.md
 .github/workflows/generate-docs.yml
 ```
 
 Requisitos:
-- Adicione o pacote `openai` nas `devDependencies` do `package.json`: `"openai": "^4.0.0"`.
+- Adicione o pacote `openai` nas `devDependencies` do `.release/package.json`: `"openai": "^4.0.0"`.
 - Configure em **Settings → Secrets and variables → Actions**:
 
 | Tipo | Nome | Valor |
@@ -242,7 +249,7 @@ Para gerar o pacote final do recurso, use o script de build:
 ### Saída do Build
 
 ```
-.release/
+dist/
 ├── mri_meuscript/           # Pasta organizada
 │   ├── fxmanifest.lua
 │   ├── client/
