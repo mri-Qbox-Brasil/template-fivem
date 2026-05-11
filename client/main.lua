@@ -4,11 +4,22 @@
 
 local isOpen = false
 
+-- Cache do config persistido em data/config.json. Hidratado lazy ao primeiro
+-- uso e mantido em sync pelo broadcast `plugintest:client:configChanged`.
+-- Quem precisar do valor atual chama getConfig() — nao mexa direto na tabela.
+local clientConfig = nil
+
+local function getConfig()
+    if clientConfig then return clientConfig end
+    clientConfig = lib.callback.await('plugintest:server:getConfig', false) or {}
+    return clientConfig
+end
+
 local function openUi()
     if isOpen then return end
     isOpen = true
     SetNuiFocus(true, true)
-    SendNUIMessage({ action = 'setVisible', data = { visible = true, config = GetPluginConfig and GetPluginConfig() or {} } })
+    SendNUIMessage({ action = 'setVisible', data = { visible = true, config = getConfig() } })
 end
 
 local function closeUi()
@@ -27,20 +38,22 @@ end)
 
 -- Aba "Configurações" do painel admin — fetch + save dos settings.
 RegisterNUICallback('adminGetConfig', function(_, cb)
-    local cfg = lib.callback.await('plugintest:server:getConfig', false)
-    cb(cfg or {})
+    cb(getConfig())
 end)
 
 RegisterNUICallback('adminSaveConfig', function(payload, cb)
     local ok, result = lib.callback.await('plugintest:server:saveConfig', false, payload)
+    if ok and result then clientConfig = result end
     cb({ success = ok == true, config = ok and result or nil })
 end)
 
--- Runtime: server broadcasta quando config muda. Apenas log por padrao —
--- substitua aqui pela logica do seu plugin (eg recarregar caches, blips, etc).
+-- Runtime: server broadcasta quando config muda. Atualiza a cache local e
+-- (opcionalmente) reage. Substitua o corpo abaixo pela logica do seu plugin
+-- (eg recarregar caches, blips, listeners, etc).
 RegisterNetEvent('plugintest:client:configChanged', function(newConfig)
     if type(newConfig) ~= 'table' then return end
-    if Config and Config.Debug then
+    clientConfig = newConfig
+    if clientConfig.debug then
         print('[plugintest] Config atualizado em runtime: ' .. json.encode(newConfig))
     end
 end)

@@ -22,10 +22,9 @@ Branch `react-qadmin-plugin` do template-fivem. Forka isso pra criar um plugin q
 ## Arquitetura
 
 ```
-client/main.lua          NUI command + callbacks (config get/save)
-server/main.lua          Registro do plugin no Qadmin (export RegisterPlugin)
+client/main.lua          NUI command + callbacks (config get/save) + cache local
+server/main.lua          Registro do plugin no Qadmin + convar mri:color watcher
 server/config.lua        Storage de data/config.json + broadcast
-shared/config.lua        Defaults + GetConvar('mri:color') compartilhado
 data/config.json         Persistencia (commit no repo como seed)
 web/src/
 ├── App.tsx              Dual-mode: EmbeddedMode | StandaloneMode
@@ -82,7 +81,7 @@ A toolchain do template (semantic-release + generate-docs) continua identica. Ve
 ## Adicionando um novo setting na aba Configurações
 
 1. **`server/config.lua`** — adiciona em `DEFAULTS`.
-2. **`shared/config.lua`** — adiciona em `Config = { ... = get('chave', default) }`.
-3. **`web/src/components/ConfigPanel.tsx`** — adiciona em `DEFAULTS` + cria um input/switch/select.
+2. **`web/src/components/ConfigPanel.tsx`** — adiciona em `DEFAULTS` + cria um input/switch/select.
+3. (Opcional) **`client/main.lua`** — se precisa reagir no client quando o setting muda, le do `getConfig()` ou do payload do `configChanged`.
 
 O `applyDefaults` no Lua e o spread `{ ...DEFAULTS, ...data }` no TS fazem forward-compat — installs antigos com JSON sem a chave nova caem nos defaults sem quebrar.
