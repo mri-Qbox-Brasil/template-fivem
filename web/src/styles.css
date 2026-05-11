@@ -1,21 +1,84 @@
+@import '@mriqbox/ui-kit/dist/style.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base styles for FiveM UI visibility */
+@layer base {
+    :root {
+        --background: 240 10% 4%;
+        --foreground: 0 0% 98%;
+        --card: 240 10% 6%;
+        --card-foreground: 0 0% 98%;
+        --popover: 240 10% 6%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 160 100% 45%;
+        --primary-foreground: 240 10% 4%;
+        --secondary: 240 5% 15%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 240 5% 15%;
+        --muted-foreground: 240 5% 60%;
+        --accent: 240 5% 15%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5% 15%;
+        --input: 240 5% 15%;
+        --ring: 160 100% 45%;
+        --radius: 0.5rem;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-transparent text-foreground;
+    }
+}
+
+/* Container do app. Em modo standalone o App.tsx retorna null enquanto
+ * fechado, entao nao precisa esconder via CSS (evita tela preta no boot
+ * embedded antes do init do bridge chegar). */
 #root {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  visibility: hidden; /* Hidden by default, shown via NUI events */
+    height: 100vh;
+    width: 100vw;
 }
 
-#root.visible {
-  visibility: visible;
+/* Scrollbar customizado (estilo MRI suite) */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+@layer utilities {
+    /* MriTabs/MriTopbar/MriSidebar do @mriqbox/ui-kit usam `no-scrollbar` em
+     * containers com overflow horizontal. Sem essa utility o scrollbar
+     * customizado acima aparece "vazando" no rodape da tab strip. */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }
