@@ -8,7 +8,7 @@ module.exports = {
         [
             '@semantic-release/exec',
             {
-                prepareCmd: "sed -i 's/__VERSION__/${nextRelease.version}/g' fxmanifest.lua && REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2) && bash scripts/build.sh $REPO_NAME"
+                prepareCmd: "sed -i 's/__VERSION__/${nextRelease.version}/g' fxmanifest.lua && REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2) && bash .release/build.sh $REPO_NAME"
             }
         ],
         [
