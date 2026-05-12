@@ -1,5 +1,3 @@
-const pkg = require('./package.json');
-
 module.exports = {
     branches: ['main'],
     plugins: [
@@ -17,7 +15,7 @@ module.exports = {
             '@semantic-release/github',
             {
                 assets: [
-                    { path: `dist/${pkg.name}.zip`, label: 'Download' }
+                    { path: 'dist/*.zip', label: 'Download' }
                 ],
                 labels: []
             }
