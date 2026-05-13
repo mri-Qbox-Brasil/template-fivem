@@ -1,65 +1,75 @@
-# Nome do Script
+# [Nome do Recurso]
 
-> Descrição curta e objetiva do que o script faz.
+[Descrição curta e objetiva do que o recurso faz.]
 
-![FiveM](https://img.shields.io/badge/FiveM-GTA%20V-green?style=flat-square)
-![Lua](https://img.shields.io/badge/Lua-5.4-orange?style=flat-square)
-![MRI Qbox](https://img.shields.io/badge/MRI%20Qbox-Brasil-blue?style=flat-square)
+## Principais recursos
 
----
+- **[Feature principal 1]** — [Descrição].
+- **[Feature principal 2]** — [Descrição].
+- **[Feature principal 3]** — [Descrição].
 
-## Dependências
+## Instalação rápida
 
-| Recurso | Obrigatório |
-|---------|-------------|
-| `ox_lib` | Sim |
-| `qbx_core` | Sim |
-
----
-
-## Instalação
-
-1. Adicione a pasta do recurso em `resources/[mri]/`
-2. Adicione `ensure nome-do-script` no `server.cfg`
-3. Configure o arquivo `shared/config.lua`
-4. Reinicie o servidor
-
----
+1. Copie a pasta `[nome_recurso]` para a pasta de resources do servidor.
+2. [Passos adicionais, ex: build do frontend se houver NUI]
+3. Adicione `ensure [nome_recurso]` no `server.cfg` (após as dependências obrigatórias).
+4. [Execute o script SQL se houver banco de dados]
 
 ## Configuração
 
-| Opção | Tipo | Padrão | Descrição |
-|-------|------|--------|-----------|
-| `Config.Debug` | `boolean` | `false` | Ativa logs de debug no console |
-| `Config.MaxItems` | `number` | `10` | Quantidade máxima de itens permitidos |
+### Dependências obrigatórias
 
----
+- `[dependência]` — [Para que é utilizada].
+
+[Se houver banco de dados, descreva o schema e as tabelas aqui.]
+
+### Permissões
+
+[Se houver sistema de permissões, descreva os grupos e níveis de acesso aqui.]
 
 ## Comandos
 
-| Comando | Permissão | Descrição |
-|---------|-----------|-----------|
-| `/comando` | Jogador | Descrição do que o comando faz |
-| `/admincomando` | Admin | Descrição do comando administrativo |
+| Comando | Descrição |
+|---|---|
+| `/[comando]` | [O que o comando faz]. |
 
----
+## Exports
 
-## Eventos
+### Client
 
-### Client → Server
+| Export | Descrição |
+|---|---|
+| `[ExportName]` | [O que faz]. |
 
-| Evento | Parâmetros | Descrição |
-|--------|-----------|-----------|
-| `script:client:acao` | `data: table` | Descrição do evento |
+### Server
 
-### Exports
+| Export | Descrição |
+|---|---|
+| `[ExportName]` | [O que faz]. |
 
-| Export | Retorno | Descrição |
-|--------|---------|-----------|
-| `exports['script']:funcao()` | `boolean` | Descrição do export |
+## Server Modules
 
----
+| Módulo | Descrição |
+|---|---|
+| `main.lua` | Lógica principal do servidor. |
 
-## Licença
+## Client Modules
 
-MIT License — MRI Qbox Team Brasil
+| Módulo | Descrição |
+|---|---|
+| `main.lua` | Entry point do cliente. |
+
+## Estrutura de arquivos 📁
+
+```
+[nome_recurso]/
+├── client/
+├── server/
+├── shared/
+[└── web/                 # Apenas se houver NUI]
+└── fxmanifest.lua
+```
+
+## Observações importantes ⚠️
+
+- [Observação técnica ou de uso relevante para quem for instalar ou usar o recurso.]

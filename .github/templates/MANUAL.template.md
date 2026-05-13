@@ -1,103 +1,86 @@
-# Manual — Nome do Script
+# [Nome do Recurso] - Manual Funcional
 
-> Guia completo para instalação, configuração e uso do script.
+[Descrição curta do que o recurso oferece e para quem é destinado.]
 
----
+## O que o recurso faz
 
-## O que este script faz
+[Descrição detalhada das funcionalidades principais, explicando o que o recurso oferece para o servidor e para os jogadores.]
 
-Descrição detalhada das funcionalidades principais, explicando o que o script oferece para o servidor e para os jogadores.
+## Funcionalidades principais
 
----
+- **[Funcionalidade 1]**: [Descrição detalhada].
+- **[Funcionalidade 2]**: [Descrição detalhada].
+- **[Funcionalidade 3]**: [Descrição detalhada].
 
-## Requisitos
+## Como funciona
 
-- **FiveM** atualizado
-- **ox_lib** instalado e iniciado antes deste recurso
-- **qbx_core** instalado e configurado
+1. [Passo 1 do fluxo principal].
+2. [Passo 2].
+3. [Passo 3].
 
----
+## Configurações disponíveis
 
-## Instalação
+[Descreva as opções de configuração disponíveis em `shared/config.lua` ou equivalente.]
 
-### 1. Download
+### Permissões
 
-Baixe a última versão em **Releases** e extraia o conteúdo.
+[Se houver sistema de permissões, descreva os grupos e níveis de acesso disponíveis.]
 
-### 2. Adicionar ao servidor
+## Comandos disponíveis
 
-```
-resources/
-└── [mri]/
-    └── nome-do-script/   ← pasta aqui
-```
+| Comando | Descrição |
+|---------|-----------|
+| `/[comando]` | [O que o comando faz]. |
 
-### 3. server.cfg
+## Eventos
 
-```cfg
-ensure nome-do-script
-```
+### Callbacks principais
 
-### 4. Configuração
+| Callback | Direção | Descrição |
+|----------|---------|-----------|
+| `[nome:do:callback]` | C→S | [O que faz]. |
 
-Abra `shared/config.lua` e ajuste as opções conforme necessário (veja seção [Configuração](#configuração)).
+## Exports
 
----
+### Client
 
-## Configuração
+| Export | Parâmetros | Retorno | Descrição |
+|--------|------------|---------|-----------|
+| `[ExportName]` | [params ou -] | [tipo ou -] | [O que faz]. |
 
-### Config.Debug
+### Server
+
+| Export | Parâmetros | Retorno | Descrição |
+|--------|------------|---------|-----------|
+| `[ExportName]` | [params ou -] | [tipo ou -] | [O que faz]. |
+
+## Módulos Server
+
+| Módulo | Funcionalidade |
+|--------|---------------|
+| `main.lua` | Lógica principal do servidor. |
+
+## Módulos Client
+
+| Módulo | Funcionalidade |
+|--------|---------------|
+| `main.lua` | Entry point do cliente. |
+
+## Exemplos práticos
+
+### [Título do exemplo 1]
 
 ```lua
-Config.Debug = false
+[Código de exemplo mostrando uso típico do recurso]
 ```
 
-Ativa mensagens de debug no console do servidor e do cliente. Desative em produção.
-
-### Config.MaxItems
+### [Título do exemplo 2]
 
 ```lua
-Config.MaxItems = 10
+[Outro exemplo prático relevante]
 ```
 
-Define a quantidade máxima de itens que um jogador pode carregar.
+## Solução de problemas
 
----
-
-## Comandos
-
-### Para jogadores
-
-#### `/comando`
-
-Descrição do que o comando faz para o jogador.
-
-**Uso:** `/comando [argumento]`
-
----
-
-### Para administradores
-
-#### `/admincomando [id]`
-
-Descrição do que o comando administrativo faz.
-
-**Uso:** `/admincomando 1`
-**Permissão:** `admin`
-
----
-
-## Perguntas frequentes
-
-**O script não inicia, o que verifico?**
-Confirme que todas as dependências estão listadas antes deste recurso no `server.cfg`.
-
-**Como desativar as notificações?**
-Defina `Config.Notificacoes = false` no `shared/config.lua`.
-
----
-
-## Suporte
-
-- Discord: [MRI Qbox Brasil](https://discord.gg/uEfGD4mmVh)
-- Issues: abra uma issue no repositório do GitHub
+- **[Problema comum 1]**: [Como resolver].
+- **[Problema comum 2]**: [Como resolver].
