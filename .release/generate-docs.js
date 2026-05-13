@@ -40,7 +40,25 @@ async function callGemini(messages, temperature) {
     return data.candidates[0].content.parts[0].text.trim();
 }
 
-const call = NATIVE ? callGemini : callOpenAI;
+const RETRIES = 3;
+
+async function callWithRetry(fn, messages, temperature) {
+    let lastErr;
+    for (let attempt = 1; attempt <= RETRIES; attempt++) {
+        try {
+            return await fn(messages, temperature);
+        } catch (err) {
+            lastErr = err;
+            const delay = attempt * 5000;
+            console.warn(`  Attempt ${attempt}/${RETRIES} failed (${err.status || err.message}), retrying in ${delay / 1000}s...`);
+            await new Promise(r => setTimeout(r, delay));
+        }
+    }
+    throw lastErr;
+}
+
+const baseCall = NATIVE ? callGemini : callOpenAI;
+const call = (messages, temperature) => callWithRetry(baseCall, messages, temperature);
 
 // --- source collection -------------------------------------------------
 
