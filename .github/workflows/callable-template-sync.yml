@@ -1,0 +1,47 @@
+name: Callable — Template Sync
+
+on:
+  workflow_call:
+    inputs:
+      source-repo:
+        type: string
+        default: 'mri-Qbox-Brasil/script-template'
+      source-branch:
+        type: string
+        default: 'main'
+      destination-branch:
+        type: string
+        default: 'main'
+    secrets:
+      GH_TOKEN:
+        required: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Sync template
+        uses: repo-sync/github-sync@v2
+        with:
+          source_repo: ${{ inputs.source-repo }}
+          source_branch: ${{ inputs.source-branch }}
+          destination_branch: ${{ inputs.destination-branch }}
+          github_token: ${{ secrets.GH_TOKEN || github.token }}
+          create_pr: true
+          pr_title: "chore(template): sync with template"
+          pr_body: "Atualização automática do template base"
+          pr_label: "template-sync"
+          exclude: |
+            config/*
+            *.local.lua
+            .env
+            .env.*
+            .github/workflows/template-sync.yml
