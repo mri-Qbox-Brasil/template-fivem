@@ -46,7 +46,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Release
-        run: npx semantic-release --extends node_modules/@mri-qbox-brasil/fivem-scripts/release.config.callable.cjs
+        run: npx semantic-release --extends ./node_modules/@mri-qbox-brasil/fivem-scripts/release.config.callable.cjs
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
