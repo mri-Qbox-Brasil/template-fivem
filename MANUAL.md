@@ -12,12 +12,6 @@ Executa build do recurso FiveM e cria release semântico no GitHub.
 **Inputs:** `node-version` (default: `20`)
 **Secrets:** `GH_TOKEN` (required)
 
-### `callable-generate-docs.yml`
-Gera `README.md` e `MANUAL.md` via IA a partir do código-fonte.
-
-**Inputs:** `node-version`, `ai-provider`, `ai-model`, `ai-base-url`, `ai-chunks`
-**Secrets:** `AI_API_KEY` (required), `GH_TOKEN` (optional)
-
 ### `callable-update-actions.yml`
 Atualiza versões das GitHub Actions e Node.js LTS nos workflows, abrindo PR com as mudanças.
 
@@ -43,6 +37,5 @@ O pacote `@mri-qbox-brasil/fivem-scripts` é publicado automaticamente a cada re
 | Comando | Descrição |
 |---|---|
 | `fivem-scripts build <nome>` | Build e empacotamento do recurso em zip |
-| `fivem-scripts generate-docs` | Geração de docs via IA |
 | `fivem-scripts set-version` | Injeta versão no `fxmanifest.lua` |
 | `fivem-scripts update-actions` | Atualiza versões de actions nos workflows |

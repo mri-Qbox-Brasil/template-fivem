@@ -11,7 +11,6 @@ const pkgRoot = path.resolve(__dirname, '..')
 const commands = {
     build: 'build.sh',
     'update-actions': 'update-actions.sh',
-    'generate-docs': 'generate-docs.js',
     'set-version': 'set-version.js',
 }
 

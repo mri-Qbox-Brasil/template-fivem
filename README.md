@@ -2,7 +2,7 @@
 
 Repositório central de workflows reutilizáveis (callables) para os scripts FiveM da MRI Qbox Brasil.
 
-Também publica o pacote npm `@mri-qbox-brasil/fivem-scripts`, que contém os scripts de build, release e geração de documentação usados pelos callables.
+Também publica o pacote npm `@mri-qbox-brasil/fivem-scripts`, que contém os scripts de build e release usados pelos callables.
 
 ---
 
@@ -11,7 +11,6 @@ Também publica o pacote npm `@mri-qbox-brasil/fivem-scripts`, que contém os sc
 | Workflow | O que faz |
 |---|---|
 | `callable-release.yml` | Build do recurso + semantic release automatizado |
-| `callable-generate-docs.yml` | Geração de README e MANUAL via IA |
 | `callable-update-actions.yml` | Atualização de versões das GitHub Actions |
 | `callable-repo-dispatch.yml` | Notificação ao repo de documentação |
 | `callable-template-sync.yml` | Sincronização com o `script-template` |
