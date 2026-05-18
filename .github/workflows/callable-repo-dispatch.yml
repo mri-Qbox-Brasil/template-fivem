@@ -1,0 +1,26 @@
+name: Callable — Notify Docs Update
+
+on:
+  workflow_call:
+    inputs:
+      friendly-name:
+        type: string
+        required: true
+      docs-repository:
+        type: string
+        default: 'mri-Qbox-Brasil/docs-mriqbox'
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  notify-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar atualização na documentação
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ inputs.docs-repository }}
+          event-type: update-manual
+          client-payload: '{"org": "${{ github.repository_owner }}", "repo": "${{ github.event.repository.name }}", "name": "${{ inputs.friendly-name }}"}'
