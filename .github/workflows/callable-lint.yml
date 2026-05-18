@@ -1,0 +1,56 @@
+name: Callable — Lint
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: '20'
+      pnpm-version:
+        type: string
+        default: '9'
+      web-dir:
+        type: string
+        default: 'web'
+      lua-lint:
+        description: 'Habilita luacheck (requer .luacheckrc no repo)'
+        type: boolean
+        default: false
+
+jobs:
+  lint-web:
+    name: Lint Web (ESLint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ inputs.pnpm-version }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'pnpm'
+          cache-dependency-path: ${{ inputs.web-dir }}/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.web-dir }}
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run ESLint
+        working-directory: ${{ inputs.web-dir }}
+        run: pnpm run lint
+
+  lint-lua:
+    name: Lint Lua (luacheck)
+    if: ${{ inputs.lua-lint }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install luacheck
+        run: sudo apt-get install -y luacheck
+
+      - name: Run luacheck
+        run: luacheck .
